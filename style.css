@@ -5,18 +5,116 @@
     box-sizing: border-box;
 }
 
+/* CSS变量定义 - 主题配色 */
+:root {
+    /* 简洁优雅主题（默认） */
+    --bg-primary: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
+    --bg-secondary: rgba(255, 255, 255, 0.95);
+    --bg-header: linear-gradient(135deg, #475569 0%, #64748b 50%, #94a3b8 100%);
+    --bg-panel: rgba(248, 250, 252, 0.8);
+    --border-primary: #e2e8f0;
+    --border-secondary: #6366f1;
+    --text-primary: #334155;
+    --text-secondary: #64748b;
+    --text-light: #ffffff;
+    --accent-primary: #6366f1;
+    --accent-secondary: #f59e0b;
+    --accent-danger: #dc2626;
+    --snake-head: #6366f1;
+    --snake-body: #a5b4fc;
+    --snake-body-gradient: #818cf8;
+    --food-primary: #dc2626;
+    --food-glow: #f59e0b;
+    --canvas-bg: linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%);
+    --canvas-grid: #475569;
+    --spiritual-energy: #6366f1;
+}
+
+/* 可爱灵蛇主题 */
+[data-theme="cute"] {
+    --bg-primary: linear-gradient(135deg, #fef7ed 0%, #fed7aa 50%, #fdba74 100%);
+    --bg-secondary: rgba(255, 251, 235, 0.95);
+    --bg-header: linear-gradient(135deg, #f97316 0%, #ea580c 50%, #dc2626 100%);
+    --bg-panel: rgba(254, 247, 237, 0.9);
+    --border-primary: #fed7aa;
+    --border-secondary: #f97316;
+    --text-primary: #9a3412;
+    --text-secondary: #c2410c;
+    --text-light: #ffffff;
+    --accent-primary: #f97316;
+    --accent-secondary: #fbbf24;
+    --accent-danger: #dc2626;
+    --snake-head: #f97316;
+    --snake-body: #fdba74;
+    --snake-body-gradient: #fb923c;
+    --food-primary: #dc2626;
+    --food-glow: #fbbf24;
+    --canvas-bg: linear-gradient(135deg, #fef3c7 0%, #fde68a 50%, #fcd34d 100%);
+    --canvas-grid: #f59e0b;
+    --spiritual-energy: #f97316;
+}
+
+/* 神秘修仙主题 */
+[data-theme="mystic"] {
+    --bg-primary: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+    --bg-secondary: rgba(26, 26, 46, 0.95);
+    --bg-header: linear-gradient(135deg, #7c3aed 0%, #5b21b6 50%, #4c1d95 100%);
+    --bg-panel: rgba(15, 15, 35, 0.9);
+    --border-primary: #4c1d95;
+    --border-secondary: #7c3aed;
+    --text-primary: #e2e8f0;
+    --text-secondary: #cbd5e1;
+    --text-light: #f8fafc;
+    --accent-primary: #7c3aed;
+    --accent-secondary: #fbbf24;
+    --accent-danger: #dc2626;
+    --snake-head: #7c3aed;
+    --snake-body: #a78bfa;
+    --snake-body-gradient: #8b5cf6;
+    --food-primary: #dc2626;
+    --food-glow: #fbbf24;
+    --canvas-bg: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+    --canvas-grid: #4c1d95;
+    --spiritual-energy: #7c3aed;
+}
+
+/* 霓虹未来主题 */
+[data-theme="neon"] {
+    --bg-primary: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+    --bg-secondary: rgba(15, 23, 42, 0.95);
+    --bg-header: linear-gradient(135deg, #06b6d4 0%, #0891b2 50%, #0e7490 100%);
+    --bg-panel: rgba(15, 23, 42, 0.9);
+    --border-primary: #0891b2;
+    --border-secondary: #06b6d4;
+    --text-primary: #06b6d4;
+    --text-secondary: #67e8f9;
+    --text-light: #f0f9ff;
+    --accent-primary: #06b6d4;
+    --accent-secondary: #f59e0b;
+    --accent-danger: #ef4444;
+    --snake-head: #06b6d4;
+    --snake-body: #67e8f9;
+    --snake-body-gradient: #22d3ee;
+    --food-primary: #ef4444;
+    --food-glow: #f59e0b;
+    --canvas-bg: linear-gradient(135deg, #0c0a09 0%, #1c1917 50%, #292524 100%);
+    --canvas-grid: #44403c;
+    --spiritual-energy: #06b6d4;
+}
+
 body {
     font-family: 'ZCOOL XiaoWei', 'Ma Shan Zheng', '华文行楷', 'KaiTi', serif;
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
+    background: var(--bg-primary);
     min-height: 100vh;
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    color: #334155;
+    color: var(--text-primary);
     position: relative;
     overflow-x: hidden;
     overflow-y: auto;
     padding: 20px 10px;
+    transition: all 0.3s ease;
 }
 
 /* 仙境背景 */
@@ -60,8 +158,8 @@ body {
 
 /* 游戏容器 */
 .game-container {
-    background: rgba(255, 255, 255, 0.95);
-    border: 1px solid #e2e8f0;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-primary);
     border-radius: 20px;
     box-shadow: 
         0 20px 25px -5px rgba(0, 0, 0, 0.1),
@@ -72,6 +170,7 @@ body {
     width: 95%;
     position: relative;
     margin: 0 auto;
+    transition: all 0.3s ease;
 }
 
 .game-container::before {
@@ -88,13 +187,14 @@ body {
 
 /* 头部区域 */
 .game-header {
-    background: linear-gradient(135deg, #475569 0%, #64748b 50%, #94a3b8 100%);
-    color: #ffffff;
+    background: var(--bg-header);
+    color: var(--text-light);
     padding: 25px;
     text-align: center;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid var(--border-primary);
     position: relative;
     z-index: 2;
+    transition: all 0.3s ease;
 }
 
 .game-header::after {
@@ -117,7 +217,7 @@ body {
 }
 
 .title-decoration {
-    color: #f59e0b;
+    color: var(--accent-secondary);
     font-size: 2.5rem;
     animation: sparkle 2s ease-in-out infinite;
 }
@@ -159,8 +259,42 @@ body {
     background: rgba(99, 102, 241, 0.1);
     padding: 12px 20px;
     border-radius: 12px;
-    border: 1px solid #6366f1;
+    border: 1px solid var(--border-secondary);
     backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+}
+
+/* 主题选择器样式 */
+.theme-selector {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.theme-selector label {
+    font-weight: 600;
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+#themeSelect {
+    padding: 8px 12px;
+    border: 1px solid var(--border-primary);
+    border-radius: 8px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-family: 'ZCOOL XiaoWei', serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#themeSelect:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
 }
 
 .label {
@@ -190,20 +324,22 @@ body {
 
 /* 左侧面板 */
 .left-panel {
-    background: rgba(248, 250, 252, 0.8);
-    border: 1px solid #e2e8f0;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-primary);
     border-radius: 16px;
     padding: 20px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
 
 /* 右侧面板 */
 .right-panel {
-    background: rgba(248, 250, 252, 0.8);
-    border: 1px solid #e2e8f0;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-primary);
     border-radius: 16px;
     padding: 20px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
 
 .cultivation-ground {
@@ -213,12 +349,13 @@ body {
 }
 
 #gameCanvas {
-    border: 2px solid #6366f1;
+    border: 2px solid var(--border-secondary);
     border-radius: 16px;
-    background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%);
+    background: var(--canvas-bg);
     box-shadow: 
         0 10px 15px -3px rgba(0, 0, 0, 0.1),
         0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
 }
 
 .spiritual-aura {
@@ -345,21 +482,21 @@ body {
 }
 
 .btn-primary {
-    background: #6366f1;
-    color: white;
-    border-color: #6366f1;
+    background: var(--accent-primary);
+    color: var(--text-light);
+    border-color: var(--accent-primary);
 }
 
 .btn-secondary {
-    background: #64748b;
-    color: white;
-    border-color: #64748b;
+    background: var(--text-secondary);
+    color: var(--text-light);
+    border-color: var(--text-secondary);
 }
 
 .btn-danger {
-    background: #dc2626;
-    color: white;
-    border-color: #dc2626;
+    background: var(--accent-danger);
+    color: var(--text-light);
+    border-color: var(--accent-danger);
 }
 
 .btn:disabled {
@@ -377,20 +514,21 @@ body {
     display: block;
     margin-bottom: 8px;
     font-weight: 600;
-    color: #475569;
+    color: var(--text-secondary);
     font-size: 0.9rem;
 }
 
 #speedSelect {
     width: 100%;
     padding: 10px;
-    border: 1px solid #cbd5e1;
+    border: 1px solid var(--border-primary);
     border-radius: 8px;
     font-size: 0.9rem;
-    background: white;
-    color: #475569;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
     cursor: pointer;
     font-family: 'ZCOOL XiaoWei', serif;
+    transition: all 0.3s ease;
 }
 
 #speedSelect:focus {
@@ -405,7 +543,7 @@ body {
 }
 
 .cultivation-guide h4, .realm-progression h4 {
-    color: #475569;
+    color: var(--text-secondary);
     margin-bottom: 12px;
     font-size: 1rem;
     font-weight: 600;
@@ -423,24 +561,26 @@ body {
     margin-bottom: 6px;
     padding: 8px 12px;
     border-radius: 6px;
-    border-left: 3px solid #6366f1;
+    border-left: 3px solid var(--accent-primary);
     font-size: 0.85rem;
     line-height: 1.4;
-    color: #64748b;
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
 }
 
 .realm-list {
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--border-primary);
     border-radius: 8px;
-    background: white;
+    background: var(--bg-secondary);
+    transition: all 0.3s ease;
 }
 
 .realm-item {
     padding: 10px 12px;
-    border-bottom: 1px solid #f1f5f9;
-    color: #64748b;
+    border-bottom: 1px solid var(--border-primary);
+    color: var(--text-secondary);
     font-size: 0.85rem;
-    transition: background 0.2s ease;
+    transition: all 0.2s ease;
 }
 
 .realm-item:hover {

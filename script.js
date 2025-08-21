@@ -3,16 +3,49 @@ const CONFIG = {
     CANVAS_SIZE: 400,
     GRID_SIZE: 20,
     INITIAL_SPEED: 150,
-    COLORS: {
-        SNAKE_HEAD: '#6366f1',
-        SNAKE_BODY: '#a5b4fc',
-        SNAKE_BODY_GRADIENT: '#818cf8',
-        FOOD: '#dc2626',
-        FOOD_GLOW: '#f59e0b',
-        BACKGROUND: 'linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%)',
-        GRID: '#475569',
-        SPIRITUAL_ENERGY: '#6366f1'
+    THEMES: {
+        elegant: {
+            SNAKE_HEAD: '#6366f1',
+            SNAKE_BODY: '#a5b4fc',
+            SNAKE_BODY_GRADIENT: '#818cf8',
+            FOOD: '#dc2626',
+            FOOD_GLOW: '#f59e0b',
+            BACKGROUND: 'linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%)',
+            GRID: '#475569',
+            SPIRITUAL_ENERGY: '#6366f1'
+        },
+        cute: {
+            SNAKE_HEAD: '#f97316',
+            SNAKE_BODY: '#fdba74',
+            SNAKE_BODY_GRADIENT: '#fb923c',
+            FOOD: '#dc2626',
+            FOOD_GLOW: '#fbbf24',
+            BACKGROUND: 'linear-gradient(135deg, #fef3c7 0%, #fde68a 50%, #fcd34d 100%)',
+            GRID: '#f59e0b',
+            SPIRITUAL_ENERGY: '#f97316'
+        },
+        mystic: {
+            SNAKE_HEAD: '#7c3aed',
+            SNAKE_BODY: '#a78bfa',
+            SNAKE_BODY_GRADIENT: '#8b5cf6',
+            FOOD: '#dc2626',
+            FOOD_GLOW: '#fbbf24',
+            BACKGROUND: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%)',
+            GRID: '#4c1d95',
+            SPIRITUAL_ENERGY: '#7c3aed'
+        },
+        neon: {
+            SNAKE_HEAD: '#06b6d4',
+            SNAKE_BODY: '#67e8f9',
+            SNAKE_BODY_GRADIENT: '#22d3ee',
+            FOOD: '#ef4444',
+            FOOD_GLOW: '#f59e0b',
+            BACKGROUND: 'linear-gradient(135deg, #0c0a09 0%, #1c1917 50%, #292524 100%)',
+            GRID: '#44403c',
+            SPIRITUAL_ENERGY: '#06b6d4'
+        }
     },
+    COLORS: {}, // 当前主题颜色，将在初始化时设置
     // 修仙境界配置
     REALMS: [
         { name: '练气初期', minScore: 0, maxScore: 40 },
@@ -24,6 +57,56 @@ const CONFIG = {
     ]
 };
 
+// 主题管理器
+class ThemeManager {
+    constructor() {
+        this.currentTheme = 'elegant';
+        this.loadTheme();
+    }
+    
+    loadTheme() {
+        // 从本地存储加载主题
+        const savedTheme = localStorage.getItem('snakeGameTheme');
+        if (savedTheme && CONFIG.THEMES[savedTheme]) {
+            this.currentTheme = savedTheme;
+        }
+        this.applyTheme(this.currentTheme);
+    }
+    
+    applyTheme(themeName) {
+        if (!CONFIG.THEMES[themeName]) return;
+        
+        this.currentTheme = themeName;
+        CONFIG.COLORS = { ...CONFIG.THEMES[themeName] };
+        
+        // 更新HTML data-theme属性
+        document.documentElement.setAttribute('data-theme', themeName);
+        
+        // 更新选择器的值
+        const themeSelect = document.getElementById('themeSelect');
+        if (themeSelect) {
+            themeSelect.value = themeName;
+        }
+        
+        // 保存到本地存储
+        localStorage.setItem('snakeGameTheme', themeName);
+        
+        // 触发主题切换事件
+        this.onThemeChange();
+    }
+    
+    onThemeChange() {
+        // 如果游戏正在运行，重新绘制画面
+        if (window.gameInstance && window.gameInstance.canvas) {
+            window.gameInstance.draw();
+        }
+    }
+    
+    getThemeConfig(themeName = this.currentTheme) {
+        return CONFIG.THEMES[themeName] || CONFIG.THEMES.elegant;
+    }
+}
+
 // 游戏状态
 class SnakeGame {
     constructor() {
@@ -34,6 +117,9 @@ class SnakeGame {
         this.finalScoreElement = document.getElementById('finalScore');
         this.realmElement = document.getElementById('realmLevel');
         this.gameOverScreen = document.getElementById('gameOverScreen');
+        
+        // 初始化主题管理器
+        this.themeManager = new ThemeManager();
         
         // 游戏状态
         this.gameRunning = false;
@@ -86,6 +172,14 @@ class SnakeGame {
         document.getElementById('speedSelect').addEventListener('change', (e) => {
             this.speed = parseInt(e.target.value);
         });
+
+        // 主题选择
+        const themeSelect = document.getElementById('themeSelect');
+        if (themeSelect) {
+            themeSelect.addEventListener('change', (event) => {
+                this.themeManager.applyTheme(event.target.value);
+            });
+        }
         
         // 键盘事件
         document.addEventListener('keydown', (e) => this.handleKeyPress(e));
@@ -255,7 +349,7 @@ class SnakeGame {
     
     draw() {
         // 清空画布
-        this.ctx.fillStyle = '#0f172a';
+        this.ctx.fillStyle = CONFIG.COLORS.BACKGROUND;
         this.ctx.fillRect(0, 0, CONFIG.CANVAS_SIZE, CONFIG.CANVAS_SIZE);
         
         // 绘制渐变背景
@@ -351,8 +445,8 @@ class SnakeGame {
             head.x + CONFIG.GRID_SIZE / 2, head.y + CONFIG.GRID_SIZE / 2, 0,
             head.x + CONFIG.GRID_SIZE / 2, head.y + CONFIG.GRID_SIZE / 2, CONFIG.GRID_SIZE
         );
-        glowGradient.addColorStop(0, 'rgba(99, 102, 241, 0.8)');
-        glowGradient.addColorStop(1, 'rgba(99, 102, 241, 0.1)');
+        glowGradient.addColorStop(0, CONFIG.COLORS.SNAKE_HEAD + '80'); // 透明度80%
+        glowGradient.addColorStop(1, CONFIG.COLORS.SNAKE_HEAD + '20'); // 透明度20%
         
         this.ctx.fillStyle = glowGradient;
         this.ctx.fillRect(head.x - 5, head.y - 5, CONFIG.GRID_SIZE + 10, CONFIG.GRID_SIZE + 10);
@@ -362,7 +456,7 @@ class SnakeGame {
         this.ctx.fillRect(head.x + 2, head.y + 2, CONFIG.GRID_SIZE - 4, CONFIG.GRID_SIZE - 4);
         
         // 头部边框
-        this.ctx.strokeStyle = '#4f46e5';
+        this.ctx.strokeStyle = CONFIG.COLORS.SNAKE_HEAD;
         this.ctx.lineWidth = 2;
         this.ctx.strokeRect(head.x + 2, head.y + 2, CONFIG.GRID_SIZE - 4, CONFIG.GRID_SIZE - 4);
         
@@ -390,7 +484,7 @@ class SnakeGame {
         this.ctx.fillRect(segment.x + 2, segment.y + 2, CONFIG.GRID_SIZE - 4, CONFIG.GRID_SIZE - 4);
         
         // 身体边框
-        this.ctx.strokeStyle = '#6366f1';
+        this.ctx.strokeStyle = CONFIG.COLORS.SNAKE_BODY;
         this.ctx.lineWidth = 1;
         this.ctx.strokeRect(segment.x + 2, segment.y + 2, CONFIG.GRID_SIZE - 4, CONFIG.GRID_SIZE - 4);
         
@@ -441,7 +535,7 @@ class SnakeGame {
             
             // 眼睛发光效果
             const eyeGlow = this.ctx.createRadialGradient(pos.x, pos.y, 0, pos.x, pos.y, eyeSize + 2);
-            eyeGlow.addColorStop(0, 'rgba(99, 102, 241, 0.8)');
+            eyeGlow.addColorStop(0, CONFIG.COLORS.SPIRITUAL_ENERGY + '80');
             eyeGlow.addColorStop(1, 'transparent');
             
             this.ctx.fillStyle = eyeGlow;
@@ -463,8 +557,8 @@ class SnakeGame {
             centerX, centerY, 0,
             centerX, centerY, radius + 8
         );
-        outerGlow.addColorStop(0, 'rgba(245, 158, 11, 0.6)');
-        outerGlow.addColorStop(0.7, 'rgba(220, 38, 38, 0.4)');
+        outerGlow.addColorStop(0, CONFIG.COLORS.FOOD_GLOW + '99');
+        outerGlow.addColorStop(0.7, CONFIG.COLORS.FOOD + '66');
         outerGlow.addColorStop(1, 'transparent');
         
         this.ctx.fillStyle = outerGlow;
@@ -477,9 +571,9 @@ class SnakeGame {
             centerX - 3, centerY - 3, 0,
             centerX, centerY, radius
         );
-        pillGradient.addColorStop(0, '#f59e0b');
+        pillGradient.addColorStop(0, CONFIG.COLORS.FOOD_GLOW);
         pillGradient.addColorStop(0.3, CONFIG.COLORS.FOOD);
-        pillGradient.addColorStop(1, '#991b1b');
+        pillGradient.addColorStop(1, CONFIG.COLORS.FOOD);
         
         this.ctx.fillStyle = pillGradient;
         this.ctx.beginPath();
@@ -487,19 +581,19 @@ class SnakeGame {
         this.ctx.fill();
         
         // 仙丹边框
-        this.ctx.strokeStyle = '#f59e0b';
+        this.ctx.strokeStyle = CONFIG.COLORS.FOOD_GLOW;
         this.ctx.lineWidth = 2;
         this.ctx.beginPath();
         this.ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
         this.ctx.stroke();
         
         // 内部符文效果（简化的太极图案）
-        this.ctx.fillStyle = '#f59e0b';
+        this.ctx.fillStyle = CONFIG.COLORS.FOOD_GLOW;
         this.ctx.beginPath();
         this.ctx.arc(centerX, centerY - 2, 3, 0, 2 * Math.PI);
         this.ctx.fill();
         
-        this.ctx.fillStyle = '#991b1b';
+        this.ctx.fillStyle = CONFIG.COLORS.FOOD;
         this.ctx.beginPath();
         this.ctx.arc(centerX, centerY + 2, 3, 0, 2 * Math.PI);
         this.ctx.fill();
@@ -614,7 +708,7 @@ class SnakeGame {
 
 // 初始化游戏
 document.addEventListener('DOMContentLoaded', () => {
-    new SnakeGame();
+    window.gameInstance = new SnakeGame();
 });
 
 // 添加触摸控制支持（移动端）
