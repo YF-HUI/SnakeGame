@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>灵蛇修仙录</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="celestial-bg">
+        <div class="floating-clouds"></div>
+        <div class="mountain-silhouette"></div>
+    </div>
+    
+    <div class="game-container">
+        <header class="game-header">
+            <h1>
+                <span class="title-decoration">⚡</span>
+                灵蛇修仙录
+                <span class="title-decoration">⚡</span>
+            </h1>
+            <div class="cultivation-status">
+                <div class="realm-info">
+                <span class="realm-label">修为境界:</span>
+                <span id="realmLevel">练气初期</span>
+                </div>
+            </div>
+            <div class="score-board">
+                <div class="score">
+                    <span class="label">灵力值:</span>
+                    <span id="score">0</span>
+                </div>
+                <div class="high-score">
+                    <span class="label">最高修为:</span>
+                    <span id="highScore">0</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="game-main">
+            <div class="left-panel">
+                <div class="realm-progression">
+                    <h4>境界等级</h4>
+                    <div class="realm-list">
+                        <div class="realm-item">练气初期 (0-40)</div>
+                        <div class="realm-item">练气中期 (50-90)</div>
+                        <div class="realm-item">练气后期 (100-140)</div>
+                        <div class="realm-item">筑基初期 (150-190)</div>
+                        <div class="realm-item">筑基中期 (200-240)</div>
+                        <div class="realm-item">筑基后期 (250+)</div>
+                    </div>
+                </div>
+                
+                <div class="control-buttons">
+                    <button id="startBtn" class="btn btn-primary">开始修炼</button>
+                    <button id="pauseBtn" class="btn btn-secondary">入定</button>
+                    <button id="resetBtn" class="btn btn-danger">重修</button>
+                </div>
+
+                <div class="cultivation-settings">
+                    <label for="speedSelect">修炼速度:</label>
+                    <select id="speedSelect">
+                        <option value="200">悟道(慢)</option>
+                        <option value="150" selected>入定(中)</option>
+                        <option value="100">疾行(快)</option>
+                        <option value="50">雷劫(极快)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="game-area">
+                <div class="cultivation-ground">
+                    <canvas id="gameCanvas" width="400" height="400"></canvas>
+                    <div class="spiritual-aura"></div>
+                </div>
+                <div id="gameOverScreen" class="game-over hidden">
+                    <h2>渡劫失败!</h2>
+                    <p>本次修炼获得灵力: <span id="finalScore">0</span></p>
+                    <p class="enlightenment">"修仙路漫漫，唯有不断精进方能得道"</p>
+                    <button id="restartBtn">重新修炼</button>
+                </div>
+            </div>
+
+            <div class="right-panel">
+                <div class="cultivation-guide">
+                    <h4>修仙指南</h4>
+                    <ul>
+                        <li>操控灵蛇吞噬天地灵气</li>
+                        <li>收集仙丹可增强修为</li>
+                        <li>切勿走火入魔撞击禁制</li>
+                        <li>空格键可进入入定状态</li>
+                        <li>修为越高，灵蛇移动越快</li>
+                        <li>点击按钮控制游戏状态</li>
+                        <li>选择合适的修炼速度</li>
+                        <li>挑战更高的修仙境界</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
